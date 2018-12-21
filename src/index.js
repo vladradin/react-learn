@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Store, createStore, combineReducers, StoreCreator, Reducer } from 'redux';
+import { Store, createStore, combineReducers, StoreCreator, Reducer, applyMiddleware } from 'redux';
 import movieReducer from './Reducers/movieReducer';
 import actorReducer from './Reducers/actorReducer';
 import favoriteReducer from './Reducers/favoriteReducer';
+
+import thunk from 'redux-thunk';
 
 const rootReducers = combineReducers({
     movies: movieReducer,
@@ -17,7 +19,7 @@ const store = createStore(rootReducers, {
     movies: [],
     actors: [],
     favorites: []
-});
+}, applyMiddleware(thunk));
 
 debugger;
 
