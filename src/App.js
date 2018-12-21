@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+
+import Navbar from './Components/Navbar';
+import SideMenu from './Components/SideMenu';
+import MainContent from './Components/MainContent';
+import FooterInfo from './Components/FooterInfo';
+
+import { Provider } from 'react-redux';
 
 class App extends Component {
   render() {
+    console.log(this.props.store);
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={this.props.store}>
+        <BrowserRouter>
+          <div className="container MainArea">
+            <Navbar />
+            <div className="row MainArea">
+              <SideMenu className="col-3" />
+              <MainContent className="col-9" />
+            </div>
+            <FooterInfo />
+          </div>
+        </BrowserRouter>
+      </Provider >
     );
   }
 }
