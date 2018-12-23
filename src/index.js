@@ -10,6 +10,8 @@ import favoriteReducer from './Reducers/favoriteReducer';
 
 import thunk from 'redux-thunk';
 
+const a = 3;
+
 const rootReducers = combineReducers({
     movies: movieReducer,
     actors: actorReducer,
