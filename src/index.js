@@ -3,33 +3,53 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Store, createStore, combineReducers, StoreCreator, Reducer, applyMiddleware } from 'redux';
-import movieReducer from './Reducers/movieReducer';
-import actorReducer from './Reducers/actorReducer';
-import favoriteReducer from './Reducers/favoriteReducer';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { actors, favorites } from "./Reducers"
+import movieApi from "./api/movie-provider"
+
+import { MovieReducer as movies } from './State/Actions/Movies/reducer';
 
 import thunk from 'redux-thunk';
+import * as types from './State/Actions/actionTypes'
 
-const a = 3;
+
+import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 
 const rootReducers = combineReducers({
-    movies: movieReducer,
-    actors: actorReducer,
-    favorites: favoriteReducer
-})
-const store = createStore(rootReducers, {
-    movies: [],
-    actors: [],
-    favorites: []
-}, applyMiddleware(thunk));
+    movies,
+    actors,
+    favorites
+});
 
-debugger;
+const getMovies = () => {
+    return dispatch => {
+        movieApi.getMovies()
+            .then(movies => {
+                dispatch({ type: types.loadMoviesSuccesfull, movies })
+            })
+    }
+}
+
+const store = createStore(rootReducers, {
+    movies: [
+        { id: 1, name: "Singur Acasa" },
+        { id: 3, name: "Terminator" }
+    ],
+    actors: [
+        { id: 1, name: "Stallone" },
+        { id: 5, name: "Michael Jackson" }
+    ],
+    favorites: {
+        movies: [1],
+        actors: [5]
+    }
+}, applyMiddleware(thunk, reduxImmutableStateInvariant()));
 
 console.log(store);
+console.log("salut");
+
+
 
 ReactDOM.render(<App store={store} />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
